@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "633d2b3b-dd27-493c-b082-8688e625884d",
+		"name": "TeachSync",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12310744",
+		"_collection_link": "https://bold-moon-100639.postman.co/workspace/New-Team-Workspace~42431af4-2713-4d64-9d83-84b1c93ef025/collection/12310744-633d2b3b-dd27-493c-b082-8688e625884d?action=share&source=collection_link&creator=12310744"
+	},
+	"item": [
+		{
+			"name": "Sign Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"abc@xyz.com\",\r\n    \"password\": \"password\",\r\n    \"firstName\":\"hammad\",\r\n    \"lastName\": \"ul haq\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign in",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: 'http://localhost:5600/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'content-type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            \"erp\": \"25252\",\r",
+							"            \"password\": \"password\"\r",
+							"        })\r",
+							"    }\r",
+							"}, (err, res) =>  pm.collectionVariables.set(\"Auth Token\",\r",
+							"     `Bearer ${res.json().responseCode === \"00\" ? res.json().data.token: undefined}`));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"abc@xyz.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "Auth Token",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlcnAiOiIyNTI1MiIsImNyZWF0ZWRBdCI6IjIwMjMtMTAtMjBUMjI6MzU6MjYuMTM0WiIsImlhdCI6MTY5Nzg0MTMyNiwiZXhwIjoxNjk3OTI3NzI2fQ.o0HHznYDwgIKU1XjS1iaHEvhboamqIbzVrVz3pDzxa8"
+		},
+		{
+			"key": "Auth Token",
+			"value": ""
+		},
+		{
+			"key": "TOKEN",
+			"value": ""
+		}
+	]
+}

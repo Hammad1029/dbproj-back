@@ -1,0 +1,605 @@
+{
+	"info": {
+		"_postman_id": "7ae1c8c8-99e7-4c7a-9af1-c3bdaed7ed1b",
+		"name": "DB proj",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12310744",
+		"_collection_link": "https://bold-moon-100639.postman.co/workspace/New-Team-Workspace~42431af4-2713-4d64-9d83-84b1c93ef025/collection/12310744-7ae1c8c8-99e7-4c7a-9af1-c3bdaed7ed1b?action=share&source=collection_link&creator=12310744"
+	},
+	"item": [
+		{
+			"name": "Sign in",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: 'http://localhost:5600/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'content-type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            \"username\": \"hammad\",\r",
+							"            \"password\": \"password\"\r",
+							"        })\r",
+							"    }\r",
+							"}, (err, res) => pm.collectionVariables.set(\"Auth Token\",\r",
+							"    `Bearer ${res.json().responseCode === \"00\" ? res.json().data.token : undefined}`));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"hammad\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Supplier",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"supplier 1\",\r\n    \"contact\": \"03368923774\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/suppliers/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"suppliers",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Supplier",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"supplier_id\": 1,\r\n    \"name\":\"supplier 1\",\r\n    \"contact\": \"jadlksjdsa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/suppliers/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"suppliers",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Supplier",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"keyword\": \"sd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/suppliers/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"suppliers",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Supplier",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"supplier_id\": \"4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/suppliers/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"suppliers",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"product 1\",\r\n    \"description\": \"sad\",\r\n    \"category\": \"ads\",\r\n    \"quantity\": 4,\r\n    \"price\": 10.4,\r\n    \"supplier_id\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/product/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"product",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_id\": 1,\r\n    \"name\": \"prod 1\",\r\n    \"description\": \"sad\",\r\n    \"category\": \"ads\",\r\n    \"quantity\": 4,\r\n    \"price\": 10.5,\r\n    \"supplier_id\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/product/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"product",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/product/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"product",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyword\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/product/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"product",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"yessshhh\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/orders/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product to Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"order_id\": 1,\r\n    \"product_id\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/orders/addProduct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"addProduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product to Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"order_id\": 1,\r\n    \"product_id\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/orders/deleteProduct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"deleteProduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"order_id\": 1,\r\n    \"description\": \"yooo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/orders/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyword\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/orders/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyword\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5600/orders/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Stats",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Auth Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5600/orders/getStats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5600",
+					"path": [
+						"orders",
+						"getStats"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "Auth Token",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlcnAiOiIyNTI1MiIsImNyZWF0ZWRBdCI6IjIwMjMtMTAtMjBUMjI6MzU6MjYuMTM0WiIsImlhdCI6MTY5Nzg0MTMyNiwiZXhwIjoxNjk3OTI3NzI2fQ.o0HHznYDwgIKU1XjS1iaHEvhboamqIbzVrVz3pDzxa8"
+		},
+		{
+			"key": "Auth Token",
+			"value": ""
+		},
+		{
+			"key": "TOKEN",
+			"value": ""
+		},
+		{
+			"key": "Bearer Token",
+			"value": ""
+		}
+	]
+}
