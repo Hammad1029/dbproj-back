@@ -6,10 +6,10 @@ const { QueryTypes } = require('sequelize');
 
 router.post("/create", async (req, res) => {
     try {
-        const { description } = req.body;
-        const { user_id } = req.user;
+        const { name, contact, shipping_address, description } = req.body;
         await db.query(
-            `insert into "Order" (user_id, description) values(${user_id},'${description}')`,
+            `insert into "Order" (name, contact, shipping_address, order_date, description) 
+            values('${name}','${contact}','${shipping_address}',to_timestamp(${Date.now()} / 1000.0),'${description}')`,
             { type: QueryTypes.INSERT }
         )
         responseHandler(res)
@@ -18,53 +18,18 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.post("/addProduct", async (req, res) => {
-    try {
-        const { order_id, product_id } = req.body;
-        let quantity = await db.query(
-            `select p.quantity from "product" p where p.product_id = '${product_id}'`,
-            { type: QueryTypes.SELECT }
-        )
-        quantity = quantity[0].quantity;
-        if (quantity <= 0) return responseHandler(res, { response: responses.noMoreLeft })
-        await db.query(
-            `insert into "order_product" (order_id,product_id) values('${order_id}', '${product_id}')`
-            , { type: QueryTypes.INSERT })
-        await db.query(
-            `update "product" set quantity='${quantity - 1}' where product_id='${product_id}'`
-            , { type: QueryTypes.UPDATE })
-        responseHandler(res)
-    } catch (error) {
-        responseHandler(res, { response: responses.serverError, error })
-    }
-})
-
-router.post("/deleteProduct", async (req, res) => {
-    try {
-        const { order_id, product_id } = req.body;
-        let quantity = await db.query(
-            `select p.quantity from "product" p where p.product_id = '${product_id}'`,
-            { type: QueryTypes.SELECT }
-        )
-        quantity = quantity[0].quantity;
-        await db.query(
-            `delete from "order_product" where order_id = '${order_id}' and product_id = '${product_id}'`,
-            { type: QueryTypes.DELETE })
-        await db.query(
-            `update "product" set quantity='${quantity - 1}' where product_id='${product_id}'`
-            , { type: QueryTypes.UPDATE })
-        responseHandler(res)
-    } catch (error) {
-        responseHandler(res, { response: responses.serverError, error })
-    }
-})
-
-
 router.post("/update", async (req, res) => {
     try {
-        const { order_id, description, } = req.body;
+        const { order_id, name, contact, shipping_address, description } = req.body;
         const order = await db.query(
-            `update "Order" set description = '${description}' where order_id='${order_id}'`,
+            `UPDATE "Order"
+            SET
+              name = ${name},
+              contact = '${contact}',
+              shipping_address = '${shipping_address}',
+              description = '${description}'
+            WHERE
+              order_id = '${order_id}';`,
             { type: QueryTypes.UPDATE }
         )
         if (order[1] === 0) return responseHandler(res, { response: responses.notFound })
@@ -91,7 +56,12 @@ router.post("/list", async (req, res) => {
     try {
         const { keyword } = req.body;
         const orders = await db.query(
-            `select * from "Order" where description ilike '%${keyword}%'`,
+            `select * from "Order"
+            WHERE 
+              description ILIKE '%${keyword}%' 
+              OR name ILIKE '%${keyword}%' 
+              OR contact ILIKE '%${keyword}%' 
+              OR shipping_address ILIKE '%${keyword}%';`,
             { type: QueryTypes.SELECT }
         )
         responseHandler(res, { data: orders })
