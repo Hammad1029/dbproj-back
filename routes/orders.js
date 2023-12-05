@@ -24,7 +24,7 @@ router.post("/update", async (req, res) => {
         const order = await db.query(
             `UPDATE "Order"
             SET
-              name = ${name},
+              name = '${name}',
               contact = '${contact}',
               shipping_address = '${shipping_address}',
               description = '${description}'
