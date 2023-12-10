@@ -4,7 +4,7 @@ const responseHandler = (res, config = {}) => {
     return res.status(response[2] || defaultConfig.response[2]).json({
         responseCode: response[0],
         responseDescription: response[1],
-        data,
+        data: data || error || undefined,
         pagination
     })
 }

@@ -7,18 +7,10 @@ const { QueryTypes } = require('sequelize');
 router.post("/add", async (req, res) => {
     try {
         const { order_id, product_id } = req.body;
-        let quantity = await db.query(
-            `select p.quantity from "product" p where p.product_id = '${product_id}'`,
-            { type: QueryTypes.SELECT }
+        await db.query(
+            `call AddProductToOrder(${product_id},${order_id})`,
+            { type: QueryTypes.RAW }
         )
-        quantity = quantity[0].quantity;
-        if (quantity <= 0) return responseHandler(res, { response: responses.noMoreLeft })
-        await db.query(
-            `insert into "order_product" (order_id,product_id) values('${order_id}', '${product_id}')`
-            , { type: QueryTypes.INSERT })
-        await db.query(
-            `update "product" set quantity='${quantity - 1}' where product_id='${product_id}'`
-            , { type: QueryTypes.UPDATE })
         responseHandler(res)
     } catch (error) {
         responseHandler(res, { response: responses.serverError, error })
@@ -28,20 +20,10 @@ router.post("/add", async (req, res) => {
 router.post("/delete", async (req, res) => {
     try {
         const { order_id, product_id } = req.body;
-        let quantity = await db.query(
-            `select p.quantity from "product" p where p.product_id = '${product_id}'`,
-            { type: QueryTypes.SELECT }
+        await db.query(
+            `call DeleteProductFromOrder(${product_id},${order_id})`,
+            { type: QueryTypes.RAW }
         )
-        quantity = quantity[0].quantity;
-        await db.query(
-            `delete from "order_product" where order_id = '${order_id}' and product_id = '${product_id}' and id IN (
-                SELECT id FROM
-                order_product WHERE order_id = '${order_id}' and product_id = '${product_id}' LIMIT 1
-             )`,
-            { type: QueryTypes.DELETE })
-        await db.query(
-            `update "product" set quantity='${quantity + 1}' where product_id='${product_id}'`
-            , { type: QueryTypes.UPDATE })
         responseHandler(res)
     } catch (error) {
         responseHandler(res, { response: responses.serverError, error })

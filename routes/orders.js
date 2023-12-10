@@ -43,8 +43,8 @@ router.post("/delete", async (req, res) => {
     try {
         const { order_id } = req.body;
         await db.query(
-            `delete from "Order" where order_id = '${order_id}'`,
-            { type: QueryTypes.DELETE }
+            `call logAndDeletOrderProcedure('${order_id}')`,
+            { type: QueryTypes.RAW }
         )
         responseHandler(res)
     } catch (error) {
